@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -24,6 +25,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already used with different provider!"
+      : "";
+
   const [error, setError] = useState<string | undefined>("");
   // useTransition used disable form fields when call back-end
   const [isPending, startTransition] = useTransition();
@@ -41,7 +48,9 @@ export const LoginForm = () => {
 
     startTransition(() => {
       Login(values).then((data) => {
-        setError(data.error);
+        data?.error !== undefined ? setError(data?.error) : setError("");
+        // TODO Add when 2FA
+        // setSuccess
       });
     });
   };
@@ -93,7 +102,7 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <Button disabled={isPending} className="w-full" type="submit">
             Login
           </Button>

@@ -33,7 +33,7 @@ export const RegisterForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      name:""
+      name: "",
     },
   });
 
@@ -42,7 +42,8 @@ export const RegisterForm = () => {
 
     startTransition(() => {
       Register(values).then((data) => {
-        setError(data.error);
+        // console.log(data.error);
+        data.error !== undefined ? setError(data.error) : setError("");
       });
     });
   };
@@ -57,7 +58,7 @@ export const RegisterForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-          <FormField
+            <FormField
               control={form.control}
               name="name"
               render={({ field }) => (

@@ -1,0 +1,8 @@
+// init and update DB Design
+npx prisma generate
+
+// to delete every DB Design it done and delete any data in DB be careful when to use 
+npx prisma migrate reset
+
+// to push updates to DB
+npx prisma db push
